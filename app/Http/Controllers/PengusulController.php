@@ -44,7 +44,58 @@ class PengusulController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            // Validasi data
+            $validatedData = $request->validate([
+                'namaLengkap' => 'required|string|max:255',
+                'username' => 'required|string|max:255',
+                'nik' => 'required|integer',
+                'nomorTelepon' => 'required|integer',
+                'jenisKelamin' => 'required|string|max:255',
+                'email' => 'required|string|max:255',
+                'password' => 'required|string|min:8',
+            ]);
+
+            // Mendapatkan koneksi PDO
+            $pdo = DB::connection()->getPdo();
+
+            // Menyiapkan query untuk menyimpan data ke database
+            $sql = "INSERT INTO pengusul (namaLengkap, username, nik, nomorTelepon, jenisKelamin, email, password) 
+                    VALUES (:namaLengkap, :username, :nik, :nomorTelepon, :jenisKelamin, :email, :password)";
+
+            // Membuat statement dan bind parameter
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':namaLengkap', $validatedData['namaLengkap']);
+            $stmt->bindParam(':username', $validatedData['username']);
+            $stmt->bindParam(':nik', $validatedData['nik']);
+            $stmt->bindParam(':nomorTelepon', $validatedData['nomorTelepon']);
+            $stmt->bindParam(':jenisKelamin', $validatedData['jenisKelamin']);
+            $stmt->bindParam(':email', $validatedData['email']);
+            $stmt->bindParam(':password', $validatedData['password']);
+
+            // Eksekusi query
+            $stmt->execute();
+
+            // Mengambil ID terakhir yang dimasukkan
+            $lastInsertId = $pdo->lastInsertId();
+
+            // Menyusun respons
+            return response()->json([
+                'message' => 'Pengusul berhasil ditambahkan.',
+                'data' => [
+                    'id' => $lastInsertId,
+                    'namaLengkap' => $validatedData['namaLengkap'],
+                    'username' => $validatedData['username'],
+                    'nik' => $validatedData['nik'],
+                    'nomorTelepon' => $validatedData['nomorTelepon'],
+                    'jenisKelamin' => $validatedData['jenisKelamin'],
+                    'email' => $validatedData['email'],
+                ],
+            ], 201);
+        } catch (\PDOException $e) {
+            // Menangani error PDO
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**
