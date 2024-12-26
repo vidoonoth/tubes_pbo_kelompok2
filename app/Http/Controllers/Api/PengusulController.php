@@ -61,8 +61,8 @@ class PengusulController extends Controller
 
         try {
             $stmt = $this->pdo->prepare("
-                INSERT INTO pengusul (namaLengkap, username, nik, nomorTelepon, jenisKelamin, email, password)
-                VALUES (:namaLengkap, :username, :nik, :nomorTelepon, :jenisKelamin, :email, :password)
+                INSERT INTO pengusul (namaLengkap, username, nik, nomorTelepon, jenisKelamin, email, password, created_at, updated_at)
+                VALUES (:namaLengkap, :username, :nik, :nomorTelepon, :jenisKelamin, :email, :password, NOW(), NOW())
             ");
 
             $stmt->execute([
@@ -130,7 +130,8 @@ class PengusulController extends Controller
                     nomorTelepon = :nomorTelepon,
                     jenisKelamin = :jenisKelamin,
                     email = :email,
-                    password = IF(:password IS NOT NULL, :password, password)
+                    password = IF(:password IS NOT NULL, :password, password),
+                    updated_at = NOW()
                 WHERE id = :id
             ");
 
