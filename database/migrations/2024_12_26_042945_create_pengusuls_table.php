@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengusuls', function (Blueprint $table) {
-            $table->id();
+            $table->id();                    
+            $table->string('namaLengkap', 255);
+            $table->string('username', 255)->unique();
+            $table->integer('nik');
+            $table->integer('nomorTelepon');
+            $table->string('jenisKelamin', 255);
+            $table->string('email', 255)->unique();
+            $table->string('password');            
             $table->timestamps();
         });
     }
