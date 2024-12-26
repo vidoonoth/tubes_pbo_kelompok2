@@ -131,3 +131,4 @@ class PengusulController extends Controller
 
     }
 }
+//tidak menggunakan PDO
