@@ -16,4 +16,8 @@ class Pengusul extends Model
         'email',
         'password',
     ];
+
+    public function Usulan(){
+        return $this->hasMany(Usulan::class, 'id_pengusul');
+    }
 }
