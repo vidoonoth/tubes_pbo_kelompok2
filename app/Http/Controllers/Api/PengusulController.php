@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Interfaces\CrudOperations;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
 use Illuminate\Support\Facades\Validator;
 
-class PengusulController extends Controller
+class PengusulController extends Controller implements CrudOperations
 {
     private $pdo;
 
@@ -25,20 +26,21 @@ class PengusulController extends Controller
         }
     }
 
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        try {
-            $stmt = $this->pdo->query("SELECT * FROM pengusul");
-            $pengusul = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    // public function index()
+    // {
+    //     try {
+    //         $stmt = $this->pdo->query("SELECT * FROM pengusul");
+    //         $pengusul = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-            return response()->json(new PostResource(true, 'List Data Pengusul', $pengusul), 200);
-        } catch (\PDOException $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
-        }
-    }
+    //         return response()->json(new PostResource(true, 'List Data Pengusul', $pengusul), 200);
+    //     } catch (\PDOException $e) {
+    //         return response()->json(['error' => $e->getMessage()], 500);
+    //     }
+    // }
 
     /**
      * Store a newly created resource in storage.

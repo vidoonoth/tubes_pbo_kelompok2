@@ -8,3 +8,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::apiResource('/pengusul', App\Http\Controllers\Api\PengusulController::class);
+Route::apiResource('/pengusulIndex', App\Http\Controllers\Api\IndexPengusulController::class);
